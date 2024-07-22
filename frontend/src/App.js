@@ -6,7 +6,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = "http://localhost:8888/api/test";
+      const url = "/api/test";
 
       const response = await fetch(url)
       if (!response.ok) {

@@ -14,7 +14,7 @@ func DatabaseConnection() *gorm.DB {
 	var p     = os.Getenv("DB_PORT")
 	var user     = os.Getenv("DB_USERNAME")
 	var password = os.Getenv("DB_PASSWORD")
-	var dbName   = "test"
+	var dbName   = os.Getenv("DB_NAME")
 
 	port, err := strconv.Atoi(p)
 	helper.ErrorPanic(err)
