@@ -21,7 +21,7 @@ func DatabaseConnection() *gorm.DB {
 
 
 
-	sqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbName)
+	sqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=require", host, port, user, password, dbName)
 	pConn := postgres.Open(sqlInfo)
 
 	fmt.Println("got here", pConn)
