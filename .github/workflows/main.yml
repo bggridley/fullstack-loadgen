@@ -26,7 +26,7 @@ jobs:
   #         docker tag backend bggridley/backend:latest
   #         docker push bggridley/backend:latest
   build-and-deploy-service:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       APP_NAME: bendemo
       SERVICE_NAME: trading
@@ -49,7 +49,7 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      ### Maybe make this 2 steps or control based on whether we push to /frontend or /backend
+      ### Maybe make this 2 steps or control based on whether we push to /frontend or
       - name: Build and Push
         run: |
           docker build -t ${{ secrets.ECR_URI }}/frontend:latest ./frontend
