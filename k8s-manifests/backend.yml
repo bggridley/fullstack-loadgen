@@ -32,4 +32,3 @@ spec:
       containers:
         - name: backend
           image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/backend:latest
-          imagePullPolicy: Never
