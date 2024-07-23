@@ -19,7 +19,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           docker build -t frontend ./frontend
-          docker build -t frontend ./backend
+          docker build -t backend ./backend
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker tag frontend bggridley/frontend:latest
           docker push bggridley/frontend:latest
