@@ -60,8 +60,10 @@ jobs:
 
       - name: Deploy to EKS     
         run: |
-          kubectl delete -f ./k8s-manifests
           kubectl apply -f ./k8s-manifests
+
+
+   #          kubectl delete -f ./k8s-manifests
     # - name: Log into Azure
       #   uses: azure/login@v2
       #   with:
