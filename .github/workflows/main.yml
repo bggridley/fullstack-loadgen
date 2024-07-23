@@ -38,27 +38,45 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Log into Azure
-        uses: azure/login@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          auth-type: IDENTITY
-      - name: Login to ACR and build
-        uses: Azure/docker-login@v2
-        with:
-          login-server: 'bendemo.azurecr.io'
-          username: ${{ secrets.ACR_USER }}
-          password: ${{ secrets.ACR_PASSWORD}}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{env.AWS_REGION}}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      ### Maybe make this 2 steps or control based on whether we push to /frontend or /backend
       - name: Build and Push
         run: |
-          docker build -t bendemo.azurecr.io/frontend:latest ./frontend
-          docker build -t bendemo.azurecr.io/backend:latest ./backend
-          docker push bendemo.azurecr.io/backend:latest
-          docker push bendemo.azurecr.io/frontend:latest
-      - uses: Azure/aks-set-context@v4
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: contoso
-          resource-group: contoso-rg
+          docker build -t ${{ secrets.ECR_URI }}/frontend:latest ./frontend
+          docker build -t ${{ secrets.ECR_URI }}/backend:latest ./backend
+          docker push ${{ secrets.ECR_URI }}/backend:latest
+          docker push ${{ secrets.ECR_URI }}/frontend:latest
+    # - name: Log into Azure
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     auth-type: IDENTITY
+      # - name: Login to ACR and build
+      #   uses: Azure/docker-login@v2
+      #   with:
+      #     login-server: 'bendemo.azurecr.io'
+      #     username: ${{ secrets.ACR_USER }}
+      #     password: ${{ secrets.ACR_PASSWORD}}
+      # - name: Build and Push
+      #   run: |
+      #     docker build -t bendemo.azurecr.io/frontend:latest ./frontend
+      #     docker build -t bendemo.azurecr.io/backend:latest ./backend
+      #     docker push bendemo.azurecr.io/backend:latest
+      #     docker push bendemo.azurecr.io/frontend:latest
+      # - uses: Azure/aks-set-context@v4
+      #   with:
+      #     creds: '${{ secrets.AZURE_CREDENTIALS }}'
+      #     cluster-name: contoso
+      #     resource-group: contoso-rg
