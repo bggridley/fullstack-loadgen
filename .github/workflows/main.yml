@@ -49,12 +49,12 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       ### Maybe make this 2 steps or control based on whether we push to /frontend or
       ## Also package in the proper .env file into this build
-      - name: Build and Push
-        run: |
-          docker build -t ${{ secrets.ECR_URI }}/frontend:latest ./frontend
-          docker build -t ${{ secrets.ECR_URI }}/backend:latest ./backend
-          docker push ${{ secrets.ECR_URI }}/backend:latest
-          docker push ${{ secrets.ECR_URI }}/frontend:latest
+      # - name: Build and Push
+      #   run: |
+      #     docker build -t ${{ secrets.ECR_URI }}/frontend:latest ./frontend
+      #     docker build -t ${{ secrets.ECR_URI }}/backend:latest ./backend
+      #     docker push ${{ secrets.ECR_URI }}/backend:latest
+      #     docker push ${{ secrets.ECR_URI }}/frontend:latest
       - name: Update kube config
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${{ secrets.AWS_REGION }}
 
