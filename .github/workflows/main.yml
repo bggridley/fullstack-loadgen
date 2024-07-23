@@ -27,7 +27,6 @@ jobs:
   #         docker push bggridley/backend:latest
   build-and-deploy-service:
     runs-on: ubuntu-latest
-    environment: production
     env:
       APP_NAME: bendemo
       SERVICE_NAME: trading
