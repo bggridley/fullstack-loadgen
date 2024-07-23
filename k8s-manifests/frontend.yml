@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: bggridley/frontend
+          image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/frontend
           imagePullPolicy: Never
 ---
 apiVersion: v1
