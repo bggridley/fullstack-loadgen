@@ -26,7 +26,7 @@ jobs:
   #         docker tag backend bggridley/backend:latest
   #         docker push bggridley/backend:latest
   build-and-deploy-service:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       APP_NAME: bendemo
       SERVICE_NAME: trading
