@@ -31,15 +31,35 @@ spec:
       containers:
         - name: frontend
           image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/frontend:latest
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-lb
+# spec:
+#   ports:
+#   - port: 80
+#     targetPort: 80
+#   selector:
+#     app: frontend
+#   type: LoadBalancer
 ---
-apiVersion: v1
-kind: Service
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: frontend-lb
+  name: frontend
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
-  ports:
-  - port: 80
-    targetPort: 80
-  selector:
-    app: frontend
-  type: LoadBalancer
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
