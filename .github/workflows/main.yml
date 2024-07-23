@@ -6,22 +6,49 @@ on:
       - main
 
 jobs:
-  build_all:
+  # build_all:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+
+  #     - name: Build and push Docker image
+  #       env:
+  #         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  #         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  #       run: |
+  #         docker build -t frontend ./frontend
+  #         docker build -t backend ./backend
+  #         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  #         docker tag frontend bggridley/frontend:latest
+  #         docker push bggridley/frontend:latest
+  #         docker tag backend bggridley/backend:latest
+  #         docker push bggridley/backend:latest
+  build-and-deploy-service:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    env:
+      APP_NAME: bendemo
+      SERVICE_NAME: trading
+      HELM_CHART_VERSION: 0.1.4
 
-      - name: Build and push Docker image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          docker build -t frontend ./frontend
-          docker build -t backend ./backend
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker tag frontend bggridley/frontend:latest
-          docker push bggridley/frontend:latest
-          docker tag backend bggridley/backend:latest
-          docker push bggridley/backend:latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to ACR and build
+        uses: Azure/docker-login@v2
+        with:
+          login-server: 'bendemo.azurecr.io' # default: index.docker.io
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASSWORD}}
+
+      - run: |
+          docker build -t bendemo.azurecr.io/frontend:latest ./frontend
+          docker build -t bendemo.azurecr.io/backend:latest ./backend
+          docker push bendemo.azurecr.io/backend:latest
+          docker push bendemo.azurecr.io/frontend:latest
