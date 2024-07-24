@@ -11,7 +11,6 @@ spec:
       targetPort: 8888
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,6 +28,7 @@ spec:
       labels:
         app: backend
     spec:
+      serviceAccountName: secrets
       volumes:
         - name: secrets-store-inline
           csi:
@@ -38,37 +38,36 @@ spec:
               secretProviderClass: "backend-pc"
       containers:
         - name: backend
-          serviceAccountName: secrets
           image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/backend:latest
           ports:
-          - containerPort: 8888
+            - containerPort: 8888
           volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"
-            readOnly: true
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
           env:
-          - name: DB_NAME
-            valueFrom:
-              secretKeyRef:
-                name: cosmocreds
-                key: dbname
-          - name: DB_URL
-            valueFrom:
-              secretKeyRef:
-                name: cosmocreds
-                key: host
-          - name: DB_PORT
-            valueFrom:
-              secretKeyRef:
-                name: cosmocreds
-                key: port
-          - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: cosmocreds
-                key: username
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: cosmocreds
-                key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cosmocreds
+                  key: dbname
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cosmocreds
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cosmocreds
+                  key: port
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cosmocreds
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cosmocreds
+                  key: password
