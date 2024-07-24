@@ -20,6 +20,7 @@ metadata:
   name: backend
   namespace: default
 spec:
+  serviceAccountName: secrets
   replicas: 1
   selector:
     matchLabels:
