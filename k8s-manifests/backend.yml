@@ -20,7 +20,6 @@ metadata:
   name: backend
   namespace: default
 spec:
-  serviceAccountName: secrets
   replicas: 1
   selector:
     matchLabels:
@@ -39,6 +38,7 @@ spec:
               secretProviderClass: "backend-pc"
       containers:
         - name: backend
+          serviceAccountName: secrets
           image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/backend:latest
           ports:
           - containerPort: 8888
