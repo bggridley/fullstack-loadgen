@@ -1,3 +1,4 @@
+
 # apiVersion: v1
 # kind: Service
 # metadata:
@@ -27,22 +28,11 @@ spec:
       labels:
         app: frontend
     spec:
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "backend-pc"
       containers:
         - name: frontend
           image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/frontend:latest
           ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/mnt/secrets-store"
-              readOnly: true
+          - containerPort: 80
 # ---
 # apiVersion: v1
 # kind: Service
