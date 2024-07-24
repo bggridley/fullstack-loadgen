@@ -49,25 +49,25 @@ spec:
           - name: DB_NAME
             valueFrom:
               secretKeyRef:
-                name: cosmocreds
+                name: fullstack-loadgen
                 key: dbname
           - name: DB_URL
             valueFrom:
               secretKeyRef:
-                name: cosmocreds
+                name: fullstack-loadgen
                 key: host
           - name: DB_PORT
             valueFrom:
               secretKeyRef:
-                name: cosmocreds
+                name: fullstack-loadgen
                 key: port
           - name: DB_USERNAME
             valueFrom:
               secretKeyRef:
-                name: cosmocreds
+                name: fullstack-loadgen
                 key: username
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: cosmocreds
+                name: fullstack-loadgen
                 key: password
