@@ -71,7 +71,6 @@ func loadEnvHack() {
 
 	for key, value := range secretsMap {
 		os.Setenv(key, value)
-    fmt.Println("Found a secret", key)
 	}
 
 	fmt.Println("Environment variables loaded from secrets successfully.")

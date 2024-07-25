@@ -10,11 +10,11 @@ import (
 )
 
 func DatabaseConnection() *gorm.DB {
-	var host     = os.Getenv("DB_URL")
-	var p     = os.Getenv("DB_PORT")
-	var user     = os.Getenv("DB_USERNAME")
-	var password = os.Getenv("DB_PASSWORD")
-	var dbName   = os.Getenv("DB_NAME")
+	var host     = os.Getenv("host")
+	var p     = os.Getenv("port")
+	var user     = os.Getenv("username")
+	var password = os.Getenv("password")
+	var dbName   = os.Getenv("dbname")
 
 	port, err := strconv.Atoi(p)
 	helper.ErrorPanic(err)
