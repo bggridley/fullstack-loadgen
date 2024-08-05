@@ -30,6 +30,8 @@ jobs:
       #     inlineScript: |
       #       az account show
       #       az storage -h
+      - name: Change directory to iac/terraform
+        run: cd iac/terraform
 
       - name: Terraform Init
         run: terraform init
