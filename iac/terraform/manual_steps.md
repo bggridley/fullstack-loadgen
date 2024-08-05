@@ -16,7 +16,7 @@ May need to change this later...
 
 But now, run:
 
-az ad sp create-for-rbac --name "terraform-sp" --role Contributor --scopes /subscriptions/<subscription-id> --sdk-auth
+`az ad sp create-for-rbac --name "terraform-sp" --role Contributor --scopes /subscriptions/<subscription-id> --sdk-auth`
 
 
 <!-- Now with that json output:
@@ -27,5 +27,18 @@ put ARM_TENANT_ID as tenantId
 
 into github actions secrets! -->
 
-Now add the output into AZURE_CREDENTIALS
+Now add the output into AZURE_CREDENTIALS secret on GitHub repo
 
+Then create a resource group:
+
+`az group create --name fl-rg --location WestUS`
+
+Then create a storage account:
+
+`az storage account create --name flterraformsa --resource-group fl-rg --location WestUS --sku Standard_LRS`
+
+Then create a storage container:
+
+`az storage container create --name terraform --account-name flterraformsa`
+
+This is reflected in main.tf

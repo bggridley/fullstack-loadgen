@@ -42,6 +42,5 @@ jobs:
         working-directory: iac/terraform
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
         working-directory: iac/terraform
