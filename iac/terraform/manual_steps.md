@@ -19,10 +19,13 @@ But now, run:
 az ad sp create-for-rbac --name "terraform-sp" --role Contributor --scopes /subscriptions/<subscription-id> --sdk-auth
 
 
-Now with that json output:
+<!-- Now with that json output:
 
 put ARM_CLIENT_ID as clientId
 put ARM_CLIENT_SECRET as clientSecret
 put ARM_TENANT_ID as tenantId
 
-into github actions secrets!
+into github actions secrets! -->
+
+Now add the output into AZURE_CREDENTIALS
+
