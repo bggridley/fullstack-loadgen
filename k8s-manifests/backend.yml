@@ -29,22 +29,22 @@ spec:
       labels:
         app: backend
     spec:
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "backend-pc"
+      # volumes:
+      #   - name: secrets-store-inline
+      #     csi:
+      #       driver: secrets-store.csi.k8s.io
+      #       readOnly: true
+      #       volumeAttributes:
+      #         secretProviderClass: "backend-pc"
       containers:
         - name: backend
           image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/backend:latest
           ports:
           - containerPort: 8888
-          volumeMounts:
-          - name: secrets-store-inline
-            mountPath: "/mnt/secrets-store"
-            readOnly: true
+          # volumeMounts:
+          # - name: secrets-store-inline
+          #   mountPath: "/mnt/secrets-store"
+          #   readOnly: true
           # env:
           # - name: DB_NAME
           #   valueFrom:
