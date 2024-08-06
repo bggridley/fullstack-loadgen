@@ -38,7 +38,7 @@ spec:
       #         secretProviderClass: "backend-pc"
       containers:
         - name: backend
-          image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/backend:latest
+          image: fullstackloadgen.azurecr.io/backend:latest
           ports:
           - containerPort: 8888
           # volumeMounts:

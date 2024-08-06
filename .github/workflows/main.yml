@@ -65,11 +65,14 @@ jobs:
           docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
           docker push fullstackloadgen.azurecr.io/backend:latest
           docker push fullstackloadgen.azurecr.io/frontend:latest
-      # - uses: Azure/aks-set-context@v4
-      #   with:
-      #     creds: '${{ secrets.AZURE_CREDENTIALS }}'
-      #     cluster-name: contoso
-      #     resource-group: contoso-rg
+      - uses: Azure/aks-set-context@v4
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: fullstackloadgen
+          resource-group: fullstack-renamed ## don't hardcode these,
+      - name: Deploy to AKS     
+        run: |
+          kubectl apply -f ./k8s-manifests
       # - uses: actions/checkout@v4
 
       # - name: Configure AWS credentials

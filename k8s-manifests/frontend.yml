@@ -37,7 +37,7 @@ spec:
       #         secretProviderClass: "backend-pc"
       containers:
         - name: frontend
-          image: 008971675165.dkr.ecr.us-west-1.amazonaws.com/frontend:latest
+          image: fullstackloadgen.azurecr.io/frontend:latest
           ports:
           - containerPort: 80
           # volumeMounts:
