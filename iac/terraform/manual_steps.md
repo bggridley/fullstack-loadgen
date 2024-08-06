@@ -18,7 +18,7 @@ But now, run:
 
 `az ad sp create-for-rbac --name "terraform-sp" --role Contributor --scopes /subscriptions/<subscription-id> --sdk-auth`
 
-Might not need this part:
+Might not need this part *** really don't think this part is needed:
 Go to secrets, create a federated credential based on the branch, in this case 'terraform' under this repository.
 
 Now do :
