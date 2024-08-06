@@ -31,9 +31,38 @@ az role definition create --role-definition '{
 }'
 ```
 
+
+And also do
+
+
+```
+az role definition create --role-definition '{
+    "Name": "CustomKeyVaultWriter",
+    "Description": "Custom role for setting values in Azure Key Vault",
+    "Actions": [
+        "Microsoft.KeyVault/vaults/write",
+        "Microsoft.KeyVault/vaults/secrets/write"
+    ],
+    "AssignableScopes": ["/subscriptions/93106148-49da-4285-9819-b153856892ea"]
+}'
+```
+
+```
+az role definition create --role-definition '{
+    "Name": "CustomKeyVaultReader",
+    "Description": "Custom role for reading secrets from Azure Key Vault",
+    "Actions": [
+        "Microsoft.KeyVault/vaults/secrets/read"
+    ],
+    "AssignableScopes": ["/subscriptions/93106148-49da-4285-9819-b153856892ea"]
+}'
+```
+
 And then this:
 
 `az role assignment create --assignee "<client ID of terraform-sp>" --role "CustomAuthorizationWriter" --scope "/subscriptions/<subscription id>"`
+
+`az role assignment create --assignee "<client ID of terraform-sp>" --role "CustomKeyVaultWriter" --scope "/subscriptions/<subscription id>"`
 
 <!-- Now with that json output:
 
