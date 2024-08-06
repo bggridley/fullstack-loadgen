@@ -98,6 +98,6 @@ resource "azurerm_key_vault" "example" {
 
 resource "azurerm_key_vault_secret" "cosmosdb_connection_string" {
   name         = "CosmosDBConnectionString"
-  value        = azurerm_cosmosdb_account.cosmos.connection_strings[0].connection_string
+  value        = azurerm_cosmosdb_account.cosmos.connection_strings[0]
   key_vault_id = azurerm_key_vault.example.id
 }
