@@ -18,9 +18,6 @@ But now, run:
 
 `az ad sp create-for-rbac --name "terraform-sp" --role Contributor --scopes /subscriptions/<subscription-id> --sdk-auth`
 
-This is needed to login to Azure from github!
-Go to secrets within Entra app terraform-sp, create a federated credential based on the branch, in this case 'terraform' under this repository.
-
 Now do :
 
 ```

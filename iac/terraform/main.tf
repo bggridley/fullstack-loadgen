@@ -63,3 +63,41 @@ resource "azurerm_role_assignment" "k8srole" {
   scope                            = azurerm_container_registry.acr.id
   skip_service_principal_aad_check = true
 }
+
+resource "azurerm_cosmosdb_account" "cosmos" {
+  name                      = "fullstackloadgen"
+  location                  = azurerm_resource_group.test-rg.location
+  resource_group_name       = azurerm_resource_group.test-rg.name
+  offer_type                = "Standard"
+  kind                      = "GlobalDocumentDB"
+  enable_automatic_failover = false
+
+  geo_location {
+    location          = azurerm_resource_group.test-rg.location
+    failover_priority = 0
+  }
+
+  consistency_policy {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+
+  depends_on = [azurerm_resource_group.test-rg]
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_key_vault" "example" {
+  name                = "fullstackloadgen"
+  location            = azurerm_resource_group.test-rg.location
+  resource_group_name = azurerm_resource_group.test-rg.name
+  sku_name            = "standard"
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+}
+
+resource "azurerm_key_vault_secret" "cosmosdb_connection_string" {
+  name         = "CosmosDBConnectionString"
+  value        = azurerm_cosmosdb_account.cosmos.connection_strings[0].connection_string
+  key_vault_id = azurerm_key_vault.example.id
+}
