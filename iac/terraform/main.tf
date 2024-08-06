@@ -34,3 +34,24 @@ resource "azurerm_container_registry" "acr" {
 
   admin_enabled       = true
 }
+
+resource "azurerm_kubernetes_cluster" "k8s" {
+  location            = azurerm_resource_group.test-rg.location
+  name                = "fullstackloadgen"
+  resource_group_name = azurerm_resource_group.test-rg.name
+  dns_prefix          = "fullstackloadgen"
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  default_node_pool {
+    name       = "agentpool"
+    vm_size    = "Standard_B2s"
+    node_count = 2
+  }
+  network_profile {
+    network_plugin    = "kubenet"
+    load_balancer_sku = "standard"
+  }
+}
