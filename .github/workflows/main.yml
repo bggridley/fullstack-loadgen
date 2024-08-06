@@ -10,32 +10,32 @@ permissions:
   contents: read
 
 jobs:
-  # terraform:
-  #   runs-on: ubuntu-latest
+  terraform:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Set up Terraform
-  #       uses: hashicorp/setup-terraform@v1
-  #       with:
-  #         terraform_version: 1.3.7
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.3.7
 
-  #     - name: Change directory to iac/terraform
-  #       run: cd iac/terraform
+      - name: Change directory to iac/terraform
+        run: cd iac/terraform
 
-  #     - name: Terraform Init
-  #       run: |
-  #         terraform init
-  #         terraform plan
-  #         terraform apply -auto-approve
-  #       working-directory: iac/terraform
-  #       env:
-  #         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  #         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  #         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  #         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      - name: Terraform Init
+        run: |
+          terraform init
+          terraform plan
+          terraform apply -auto-approve
+        working-directory: iac/terraform
+        env:
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   build-and-deploy-service:
     runs-on: ubuntu-latest
     env:
@@ -48,6 +48,8 @@ jobs:
       #     tenant-id: ${{ secrets.ARM_TENANT_ID }}
       #     subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       #     auth-type: IDENTITY
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Login to ACR
         uses: Azure/docker-login@v2
         with:
