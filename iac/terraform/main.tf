@@ -26,3 +26,11 @@ resource "azurerm_resource_group" "test-rg" {
   location = "West US"
 }
 
+resource "azurerm_container_registry" "acr" {
+  name                = "test-registry"
+  resource_group_name  = azurerm_resource_group.test-rg.name
+  location            = azurerm_resource_group.test-rg.location
+  sku                 = "Basic"
+
+  admin_enabled       = true
+}
