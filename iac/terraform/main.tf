@@ -22,7 +22,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "test-rg" {
-  name     = "fullstack-lg-rg"
+  name     = "fullstack-renamed"
   location = "West US"
 }
 
