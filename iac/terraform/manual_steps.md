@@ -21,6 +21,23 @@ But now, run:
 Might not need this part:
 Go to secrets, create a federated credential based on the branch, in this case 'terraform' under this repository.
 
+Now do :
+
+```
+az role definition create --role-definition '{
+    "Name": "CustomAuthorizationWriter",
+    "Description": "Custom role for Microsoft.Authorization write operations",
+    "Actions": [
+        "Microsoft.Authorization/*/Write"
+    ],
+    "AssignableScopes": ["/subscriptions/<subscription id>"]
+}'
+```
+
+And then this:
+
+`az role assignment create --assignee "<client ID of terraform-sp>" --role "CustomAuthorizationWriter" --scope "/subscriptions/<subscription id>"`
+
 <!-- Now with that json output:
 
 put ARM_CLIENT_ID as clientId
