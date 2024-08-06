@@ -59,8 +59,8 @@ jobs:
           ls
       - name: Build and Push
         run: |
-          docker build -t fullstackloadgen.azurecr.io/frontend:latest ../frontend
-          docker build -t fullstackloadgen.azurecr.io/backend:latest ../backend
+          docker build -t fullstackloadgen.azurecr.io/frontend:latest ./frontend
+          docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
           docker push fullstackloadgen.azurecr.io/backend:latest
           docker push fullstackloadgen.azurecr.io/frontend:latest
       # - uses: Azure/aks-set-context@v4
