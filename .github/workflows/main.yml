@@ -41,13 +41,6 @@ jobs:
     env:
       AKS_CLUSTER_NAME: fullstackloadgen
     steps:
-      # - name: Log into Azure
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ secrets.ARM_CLIENT_ID }}
-      #     tenant-id: ${{ secrets.ARM_TENANT_ID }}
-      #     subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      #     auth-type: IDENTITY
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Login to ACR
@@ -70,6 +63,12 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: fullstackloadgen
           resource-group: fullstack-renamed ## don't hardcode these,
+      - name: Log into Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       - name: Deploy to AKS     
         run: |
           kubectl apply -f ./k8s-manifests
