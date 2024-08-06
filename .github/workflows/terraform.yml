@@ -38,7 +38,6 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd iac/terraform
           terraform init
           terraform plan
         working-directory: iac/terraform
@@ -47,11 +46,3 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
-      - name: Terraform Plan
-        run: terraform plan
-        working-directory: iac/terraform
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
-        working-directory: iac/terraform
