@@ -48,7 +48,7 @@ jobs:
       #     tenant-id: ${{ secrets.ARM_TENANT_ID }}
       #     subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       #     auth-type: IDENTITY
-      - name: Login to ACR and build
+      - name: Login to ACR
         uses: Azure/docker-login@v2
         with:
           login-server: fullstackloadgen.azurecr.io
@@ -58,8 +58,8 @@ jobs:
         run: |
           pwd
           ls
-          docker build -t fullstackloadgen.azurecr.io/frontend:latest ./frontend
-          docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
+          docker build -t fullstackloadgen.azurecr.io/frontend:latest /frontend
+          docker build -t fullstackloadgen.azurecr.io/backend:latest /backend
           docker push fullstackloadgen.azurecr.io/backend:latest
           docker push fullstackloadgen.azurecr.io/frontend:latest
       # - uses: Azure/aks-set-context@v4
