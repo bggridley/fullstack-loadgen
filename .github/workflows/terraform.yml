@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - terraform
-
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -34,7 +37,8 @@ jobs:
         run: cd iac/terraform
 
       - name: Terraform Init
-        run: terraform init
+        run: 
+          terraform init
         working-directory: iac/terraform
 
       - name: Terraform Plan

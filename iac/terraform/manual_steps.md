@@ -18,6 +18,9 @@ But now, run:
 
 `az ad sp create-for-rbac --name "terraform-sp" --role Contributor --scopes /subscriptions/<subscription-id> --sdk-auth`
 
+^^ Might be wrong
+
+Go to secrets, create a credential based on the branch, in this case 'terraform' under this repository.
 
 <!-- Now with that json output:
 
@@ -27,7 +30,9 @@ put ARM_TENANT_ID as tenantId
 
 into github actions secrets! -->
 
-Now add the output into AZURE_CREDENTIALS secret on GitHub repo
+Now add the output into `AZURE_CREDENTIALS` secret on GitHub repo
+
+### Create a storage account and a new container for terraform state file
 
 Then create a resource group:
 
