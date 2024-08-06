@@ -88,7 +88,7 @@ resource "azurerm_cosmosdb_account" "cosmos" {
 
 data "azurerm_client_config" "current" {}
 
-resource "azurerm_key_vault" "example" {
+resource "azurerm_key_vault" "akv" {
   name                = "fullstackloadgen"
   location            = azurerm_resource_group.test-rg.location
   resource_group_name = azurerm_resource_group.test-rg.name
@@ -97,8 +97,14 @@ resource "azurerm_key_vault" "example" {
   enable_rbac_authorization = true
 }
 
+resource "azurerm_role_assignment" "akv_sp" {
+  scope                = azurerm_key_vault.akv.id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
 resource "azurerm_key_vault_secret" "cosmosdb_connection_string" {
   name         = "CosmosDBConnectionString"
   value        = azurerm_cosmosdb_account.cosmos.connection_strings[0]
-  key_vault_id = azurerm_key_vault.example.id
+  key_vault_id = azurerm_key_vault.akv.id
 }
