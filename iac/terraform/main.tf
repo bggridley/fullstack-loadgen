@@ -75,15 +75,15 @@ resource "azurerm_cosmosdb_postgresql_cluster" "cosmos" {
   administrator_login_password    = "H@Sh1CoR3!"
   coordinator_storage_quota_in_mb = 32768
   coordinator_vcore_count         = 1
-  node_count                      = 1
+  node_count                      = 0
   node_storage_quota_in_mb        = 32768
   node_vcores                     = 1
 }
 
-resource "azurerm_cosmosdb_postgresql_node_configuration" "cosmos" {
-  name       = "array_nulls"
+resource "azurerm_cosmosdb_postgresql_role" "cosmos-role" {
+  name       = "cosmosrole"
   cluster_id = azurerm_cosmosdb_postgresql_cluster.cosmos.id
-  value      = "on"
+  password   = "H@Sh1CoR3!"
 }
 
 data "azurerm_client_config" "current" {}
