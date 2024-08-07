@@ -68,25 +68,26 @@ resource "azurerm_role_assignment" "k8srole" {
   skip_service_principal_aad_check = true
 }
 
-resource "azurerm_postgresql_server" "postgres" {
-  name                = "fullstackloadgen"
-  location            = azurerm_resource_group.test-rg.location
-  resource_group_name = azurerm_resource_group.test-rg.name
+resource "azurerm_postgresql_flexible_server" "main" {
+  name                   = "fullstackloadgen"
+  resource_group_name    = azurerm_resource_group.main.name
+  location               = azurerm_resource_group.main.location
+  administrator_login    = "test123"
+  administrator_password = "test123"
+  zone                   = 2
 
-  administrator_login          = "psqladmin"
-  administrator_login_password = "H@Sh1CoR3!"
-
-  sku_name   = "GP_Gen5_4"
-  version    = "11"
-  storage_mb = 65536
+  authentication {
+    active_directory_auth_enabled = "true"
+    password_auth_enabled         = "true"
+    tenant_id                     = data.azurerm_client_config.current.tenant_id
+  }
 
   backup_retention_days        = 7
-  geo_redundant_backup_enabled = true
-  auto_grow_enabled            = true
+  geo_redundant_backup_enabled = "true"
 
-  public_network_access_enabled    = false
-  ssl_enforcement_enabled          = true
-  ssl_minimal_tls_version_enforced = "TLS1_2"
+  sku_name   = "B_Standard_B1ms"
+  storage_mb = 65536
+  version    = 11
 }
 
 data "azurerm_client_config" "current" {}
