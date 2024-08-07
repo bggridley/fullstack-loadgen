@@ -29,6 +29,26 @@ az role definition create --role-definition '{
     ],
     "AssignableScopes": ["/subscriptions/<subscription id>"]
 }'
+
+az role definition create --role-definition '{
+    "Name": "CustomAuthorizationDeleter",
+    "Description": "Custom role for Microsoft.Authorization write operations",
+    "Actions": [
+        "Microsoft.Authorization/*/Delete"
+    ],
+    "AssignableScopes": ["/subscriptions/93106148-49da-4285-9819-b153856892ea"]
+}'
+```
+
+```
+az role definition create --role-definition '{
+    "Name": "CustomAuthorizationWriter",
+    "Description": "Custom role for Microsoft.Authorization write operations",
+    "Actions": [
+        "Microsoft.Authorization/*/Write"
+    ],
+    "AssignableScopes": ["/subscriptions/<subscription id>"]
+}'
 ```
 
 
