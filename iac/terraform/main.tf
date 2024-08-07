@@ -78,7 +78,7 @@ resource "azurerm_postgresql_server" "postgres" {
 
   sku_name   = "GP_Gen5_4"
   version    = "11"
-  storage_mb = 64000
+  storage_mb = 65536
 
   backup_retention_days        = 7
   geo_redundant_backup_enabled = true
