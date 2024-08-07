@@ -89,7 +89,7 @@ resource "azurerm_postgresql_flexible_server" "main" {
   version    = 11
 }
 
-resource "azurerm_postgresql_firewall_rule" "main" {
+resource "azurerm_postgresql_flexible_server_firewall_rule" "main" {
   name                = "fullstackloadgen"
   resource_group_name = azurerm_resource_group.test-rg.name
   server_name         = azurerm_postgresql_flexible_server.main.name
