@@ -68,22 +68,25 @@ resource "azurerm_role_assignment" "k8srole" {
   skip_service_principal_aad_check = true
 }
 
-resource "azurerm_cosmosdb_postgresql_cluster" "cosmos" {
-  name                            = "fullstackbg"
-  resource_group_name             = azurerm_resource_group.test-rg.name
-  location                        = azurerm_resource_group.test-rg.location
-  administrator_login_password    = "H@Sh1CoR3!"
-  coordinator_storage_quota_in_mb = 32768
-  coordinator_vcore_count         = 1
-  node_count                      = 0
-  node_storage_quota_in_mb        = 32768
-  node_vcores                     = 1
-}
+resource "azurerm_postgresql_server" "postgres" {
+  name                = "fullstackloadgen"
+  location            = azurerm_resource_group.test-rg.location
+  resource_group_name = azurerm_resource_group.test-rg.name
 
-resource "azurerm_cosmosdb_postgresql_role" "cosmos-role" {
-  name       = "cosmosrole"
-  cluster_id = azurerm_cosmosdb_postgresql_cluster.cosmos.id
-  password   = "H@Sh1CoR3!"
+  administrator_login          = "psqladmin"
+  administrator_login_password = "H@Sh1CoR3!"
+
+  sku_name   = "GP_Gen5_4"
+  version    = "11"
+  storage_mb = 64000
+
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = true
+  auto_grow_enabled            = true
+
+  public_network_access_enabled    = false
+  ssl_enforcement_enabled          = true
+  ssl_minimal_tls_version_enforced = "TLS1_2"
 }
 
 data "azurerm_client_config" "current" {}
