@@ -70,11 +70,10 @@ resource "azurerm_role_assignment" "k8srole" {
 
 resource "azurerm_postgresql_flexible_server" "main" {
   name                   = "fullstackloadgen"
-  resource_group_name    = azurerm_resource_group.main.name
-  location               = azurerm_resource_group.main.location
+  resource_group_name    = azurerm_resource_group.test-rg.name
+  location               = azurerm_resource_group.test-rg.location
   administrator_login    = "test123"
   administrator_password = "test123"
-  zone                   = 2
 
   authentication {
     active_directory_auth_enabled = "true"
