@@ -20,7 +20,7 @@ import (
 
 func main() {
   // Load env vars
-  loadEnvHack()
+//   loadEnvHack()
   godotenv.Load() 
 
 	//Database

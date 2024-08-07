@@ -89,6 +89,14 @@ resource "azurerm_postgresql_flexible_server" "main" {
   version    = 11
 }
 
+resource "azurerm_postgresql_firewall_rule" "main" {
+  name                = "fullstackloadgen"
+  resource_group_name = azurerm_resource_group.main.name
+  server_name         = azurerm_postgresql_server.main.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
+
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "akv" {
