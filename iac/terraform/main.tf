@@ -69,7 +69,7 @@ resource "azurerm_role_assignment" "k8srole" {
 }
 
 resource "azurerm_cosmosdb_postgresql_cluster" "cosmos" {
-  name                            = "fullstackloadgen"
+  name                            = "fullstackbg"
   resource_group_name             = azurerm_resource_group.test-rg.name
   location                        = azurerm_resource_group.test-rg.location
   administrator_login_password    = "H@Sh1CoR3!"
@@ -105,6 +105,6 @@ resource "azurerm_role_assignment" "akv_sp" {
 
 resource "azurerm_key_vault_secret" "cosmosdb_connection_string" {
   name         = "CosmosDBConnectionString"
-  value        = azurerm_cosmosdb_account.cosmos.connection_strings[0]
+  value        = "test123"
   key_vault_id = azurerm_key_vault.akv.id
 }
