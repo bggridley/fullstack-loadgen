@@ -68,26 +68,22 @@ resource "azurerm_role_assignment" "k8srole" {
   skip_service_principal_aad_check = true
 }
 
-resource "azurerm_cosmosdb_account" "cosmos" {
-  name                      = "fullstackloadgen"
-  location                  = azurerm_resource_group.test-rg.location
-  resource_group_name       = azurerm_resource_group.test-rg.name
-  offer_type                = "Standard"
-  kind                      = "GlobalDocumentDB"
-  enable_automatic_failover = false
+resource "azurerm_cosmosdb_postgresql_cluster" "cosmos" {
+  name                            = "fullstackloadgen"
+  resource_group_name             = azurerm_resource_group.test-rg.name
+  location                        = azurerm_resource_group.test-rg.location
+  administrator_login_password    = "H@Sh1CoR3!"
+  coordinator_storage_quota_in_mb = 32768
+  coordinator_vcore_count         = 1
+  node_count                      = 1
+  node_storage_quota_in_mb        = 32768
+  node_vcores                     = 1
+}
 
-  geo_location {
-    location          = azurerm_resource_group.test-rg.location
-    failover_priority = 0
-  }
-
-  consistency_policy {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-
-  depends_on = [azurerm_resource_group.test-rg]
+resource "azurerm_cosmosdb_postgresql_node_configuration" "cosmos" {
+  name       = "array_nulls"
+  cluster_id = azurerm_cosmosdb_postgresql_cluster.cosmos.id
+  value      = "on"
 }
 
 data "azurerm_client_config" "current" {}
