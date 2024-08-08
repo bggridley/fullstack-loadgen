@@ -36,8 +36,6 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: fullstackloadgen
-            nodePublishSecretRef:                       # Only required when using service principal mode
-              name: fullstackloadgen
       # volumes:
       #   - name: secrets-store-inline
       #     csi:
