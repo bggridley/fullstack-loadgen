@@ -29,6 +29,15 @@ spec:
       labels:
         app: backend
     spec:
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: fullstackloadgen
+            nodePublishSecretRef:                       # Only required when using service principal mode
+              name: secrets-store-creds
       # volumes:
       #   - name: secrets-store-inline
       #     csi:
@@ -41,6 +50,10 @@ spec:
           image: fullstackloadgen.azurecr.io/backend:latest
           ports:
           - containerPort: 8888
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
           # volumeMounts:
           # - name: secrets-store-inline
           #   mountPath: "/mnt/secrets-store"
