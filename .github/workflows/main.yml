@@ -19,7 +19,7 @@ jobs:
       - name: Deploy to AKS     
         run: |
           cd k8s-manifests
-          for f in *.yml; do ensubst < $f; done
+          for f in *.yml; do envsubst < $f; done
       # for f in *.yml; do envsubst < $f | kubectl apply -f -; done
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
