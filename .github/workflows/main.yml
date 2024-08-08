@@ -10,9 +10,12 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  terraform:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Deploy to AKS     
         run: |
           cd k8s-manifests
@@ -21,13 +24,6 @@ jobs:
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  terraform:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -78,6 +74,7 @@ jobs:
         with:
           cluster-name: fullstackloadgen
           resource-group: fullstack-renamed ## don't hardcode these,
+
 
       # kubectl apply -f ./k8s-manifests
       # - uses: actions/checkout@v4
