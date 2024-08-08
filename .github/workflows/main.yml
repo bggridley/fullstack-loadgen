@@ -10,6 +10,17 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to AKS     
+        run: |
+          cd k8s-manifests
+          for f in *.yml; do ensubst < $f; done
+      # for f in *.yml; do envsubst < $f | kubectl apply -f -; done
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   terraform:
     runs-on: ubuntu-latest
 
@@ -67,13 +78,6 @@ jobs:
         with:
           cluster-name: fullstackloadgen
           resource-group: fullstack-renamed ## don't hardcode these,
-      - name: Deploy to AKS     
-        run: |
-          cd k8s-manifests
-          for f in *.yml; do envsubst < $f | kubectl apply -f -; done
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       # kubectl apply -f ./k8s-manifests
       # - uses: actions/checkout@v4
