@@ -70,7 +70,11 @@ jobs:
       - name: Deploy to AKS     
         run: |
           cd k8s-manifests
-          for f in *.yaml; do envsubst < $f | kubectl apply -f -; done
+          for f in *.yml; do envsubst < $f | kubectl apply -f -; done
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
       # kubectl apply -f ./k8s-manifests
       # - uses: actions/checkout@v4
 
