@@ -16,14 +16,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Deploy to AKS     
-        run: |
-          cd k8s-manifests
-          for f in *.yml; do envsubst < $f; done
-      # for f in *.yml; do envsubst < $f | kubectl apply -f -; done
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -74,7 +67,13 @@ jobs:
         with:
           cluster-name: fullstackloadgen
           resource-group: fullstack-renamed ## don't hardcode these,
-
+      - name: Deploy to AKS     
+        run: |
+          cd k8s-manifests
+          for f in *.yml; do envsubst < $f | kubectl apply -f -; done
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
       # kubectl apply -f ./k8s-manifests
       # - uses: actions/checkout@v4
