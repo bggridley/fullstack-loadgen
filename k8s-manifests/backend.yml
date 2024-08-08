@@ -36,8 +36,8 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: fullstackloadgen
-            # nodePublishSecretRef:                       # Only required when using service principal mode
-            #   name: secrets-store-creds
+            nodePublishSecretRef:                       # Only required when using service principal mode
+              name: CosmosDBConnectionString
       # volumes:
       #   - name: secrets-store-inline
       #     csi:
