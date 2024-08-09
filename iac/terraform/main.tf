@@ -136,7 +136,7 @@ resource "azurerm_role_assignment" "akv_sp_k8s" {
 
 resource "azurerm_key_vault_secret" "db_login" {
   name         = "db-login"
-  value        = random_pet.db_username.result
+  value        = random_pet.db_username.id
   key_vault_id = azurerm_key_vault.akv.id
 }
 
