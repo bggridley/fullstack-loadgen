@@ -14,7 +14,8 @@ function App() {
       }
 
       const json = await response.json()
-      setComp(json.data)
+      if (json.data)
+        setComp(json.data)
     }
 
     fetchData()
@@ -22,21 +23,21 @@ function App() {
   }, [])
 
   return (
-     <div className="min-h-screen bg-gradient-to-b from-gray-700 to-green-200 flex flex-col items-center p-4">
-            <div className="p-6 mt-40">
-                <h2 className="text-2xl font-bold text-gray-800 text-center mb-5">Spaghetti List</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {comp.map((comp, index) => (
-                        <div
-                            key={index}
-                            className="bg-white mx-1 px-5 text-center py-3 rounded-lg shadow transform transition-transform duration-200 hover:scale-105 cursor-pointer"
-                        >
-                            {comp.name}
-                        </div>
-                    ))}
-                </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-700 to-green-200 flex flex-col items-center p-4">
+      <div className="p-6 mt-40">
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-5">Spaghetti List</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {comp.map((comp, index) => (
+            <div
+              key={index}
+              className="bg-white mx-1 px-5 text-center py-3 rounded-lg shadow transform transition-transform duration-200 hover:scale-105 cursor-pointer"
+            >
+              {comp.name}
             </div>
+          ))}
         </div>
+      </div>
+    </div>
   );
 }
 
