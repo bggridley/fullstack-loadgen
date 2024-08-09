@@ -26,7 +26,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "test-rg" {
-  name     = "fullstack-renamed"
+  name     = var.rg_name
   location = "West US"
 }
 

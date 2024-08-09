@@ -31,7 +31,7 @@ jobs:
         run: |
           terraform init
           terraform plan
-          terraform apply -auto-approve
+          terraform apply -auto-approve -var "rg_name=${ARM_RESOURCE_GROUP}"
           echo "secrets_identity_id=$(terraform output secrets_identity_id)" >> "$GITHUB_OUTPUT"
         working-directory: iac/terraform
       
@@ -40,6 +40,7 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_RESOURCE_GROUP: ${{ secrets.ARM_RESOURCE_GROUP }}
     outputs:
       secrets_identity_id: ${{steps.init.outputs.secrets_identity_id}}
   build-and-deploy-service:
@@ -69,7 +70,7 @@ jobs:
       - uses: Azure/aks-set-context@v4
         with:
           cluster-name: fullstackloadgen
-          resource-group: fullstack-renamed ## don't hardcode these,
+          resource-group: $ {{ secrets.ARM_RESOURCE_GROUP}} ## don't hardcode these,
       - name: Deploy to AKS     
         run: |
           cd k8s-manifests

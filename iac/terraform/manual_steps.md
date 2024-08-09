@@ -36,7 +36,7 @@ az role definition create --role-definition '{
     "Actions": [
         "Microsoft.Authorization/*/Delete"
     ],
-    "AssignableScopes": ["/subscriptions/93106148-49da-4285-9819-b153856892ea"]
+    "AssignableScopes": ["/subscriptions/<>"]
 }'
 ```
 
@@ -63,7 +63,7 @@ az role definition create --role-definition '{
         "Microsoft.KeyVault/vaults/write",
         "Microsoft.KeyVault/vaults/secrets/write"
     ],
-    "AssignableScopes": ["/subscriptions/93106148-49da-4285-9819-b153856892ea"]
+    "AssignableScopes": ["/subscriptions/<>"]
 }'
 ```
 
