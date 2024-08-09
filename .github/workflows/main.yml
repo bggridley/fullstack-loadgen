@@ -21,6 +21,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.3.7
+          terraform_wrapper: false
 
       - name: Change directory to iac/terraform
         run: cd iac/terraform
@@ -30,12 +31,16 @@ jobs:
           terraform init
           terraform plan
           terraform apply -auto-approve
+          echo "secrets_identity_id=$(terraform output secrets_identity_id)" >> "$GITHUB_OUTPUT"
         working-directory: iac/terraform
+      
         env:
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    outputs:
+      secrets_identity_id: ${{steps.init.outputs.secrets_identity_id}}
   build-and-deploy-service:
     needs: terraform
     runs-on: ubuntu-latest
@@ -48,21 +53,21 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      # - name: Login to ACR
-      #   uses: Azure/docker-login@v2
-      #   with:
-      #     login-server: fullstackloadgen.azurecr.io
-      #     username: ${{ secrets.ARM_CLIENT_ID }}
-      #     password: ${{ secrets.ARM_CLIENT_SECRET}}
-      # - name: LS
-      #   run: |
-      #     ls
-      # - name: Build and Push
-      #   run: |
-      #     docker build -t fullstackloadgen.azurecr.io/frontend:latest ./frontend
-      #     docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
-      #     docker push fullstackloadgen.azurecr.io/backend:latest
-      #     docker push fullstackloadgen.azurecr.io/frontend:latest
+    # - name: Login to ACR
+    #   uses: Azure/docker-login@v2
+    #   with:
+    #     login-server: fullstackloadgen.azurecr.io
+    #     username: ${{ secrets.ARM_CLIENT_ID }}
+    #     password: ${{ secrets.ARM_CLIENT_SECRET}}
+    # - name: LS
+    #   run: |
+    #     ls
+    # - name: Build and Push
+    #   run: |
+    #     docker build -t fullstackloadgen.azurecr.io/frontend:latest ./frontend
+    #     docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
+    #     docker push fullstackloadgen.azurecr.io/backend:latest
+    #     docker push fullstackloadgen.azurecr.io/frontend:latest
       - uses: Azure/aks-set-context@v4
         with:
           cluster-name: fullstackloadgen
@@ -71,38 +76,8 @@ jobs:
         run: |
           cd k8s-manifests
           for f in *.yml; do envsubst < $f | kubectl apply -f -; done
+          echo "$SECRETS_IDENTITY_ID"
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
-      # kubectl apply -f ./k8s-manifests
-      # - uses: actions/checkout@v4
-
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     aws-region: ${{ secrets.AWS_REGION }}
-
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
-      # ### Maybe make this 2 steps or control based on whether we push to /frontend or
-      # ## Also package in the proper .env file into this build
-      # - name: Build and Push
-      #   run: |
-      #     docker build -t ${{ secrets.ECR_URI }}/frontend:latest ./frontend
-      #     docker build -t ${{ secrets.ECR_URI }}/backend:latest ./backend
-      #     docker push ${{ secrets.ECR_URI }}/backend:latest
-      #     docker push ${{ secrets.ECR_URI }}/frontend:latest
-      # - name: Update kube config
-      #   run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${{ secrets.AWS_REGION }}
-
-      # - name: Deploy to EKS     
-      #   run: |
-      #     kubectl apply -f ./k8s-manifests
-
-
-   #          kubectl delete -f ./k8s-manifests
-    
+          SECRETS_IDENTITY_ID: ${{ needs.terraform.outputs.secrets_identity_id}}
