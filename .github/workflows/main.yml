@@ -54,21 +54,18 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-    # - name: Login to ACR
-    #   uses: Azure/docker-login@v2
-    #   with:
-    #     login-server: fullstackloadgen.azurecr.io
-    #     username: ${{ secrets.ARM_CLIENT_ID }}
-    #     password: ${{ secrets.ARM_CLIENT_SECRET}}
-    # - name: LS
-    #   run: |
-    #     ls
-    # - name: Build and Push
-    #   run: |
-    #     docker build -t fullstackloadgen.azurecr.io/frontend:latest ./frontend
-    #     docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
-    #     docker push fullstackloadgen.azurecr.io/backend:latest
-    #     docker push fullstackloadgen.azurecr.io/frontend:latest
+      - name: Login to ACR
+        uses: Azure/docker-login@v2
+        with:
+          login-server: fullstackloadgen.azurecr.io
+          username: ${{ secrets.ARM_CLIENT_ID }}
+          password: ${{ secrets.ARM_CLIENT_SECRET}}
+      - name: Build and Push
+        run: |
+          docker build -t fullstackloadgen.azurecr.io/frontend:latest ./frontend
+          docker build -t fullstackloadgen.azurecr.io/backend:latest ./backend
+          docker push fullstackloadgen.azurecr.io/backend:latest
+          docker push fullstackloadgen.azurecr.io/frontend:latest
       - uses: Azure/aks-set-context@v4
         with:
           cluster-name: fullstackloadgen

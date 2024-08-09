@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	// "os"
+	"os"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"backend/helper"
@@ -10,9 +10,11 @@ import (
 )
 
 func DatabaseConnection() *gorm.DB {
-	// var connString     = os.Getenv("CONN_STRING")
+	var dbUsername     = os.Getenv("DB_USERNAME")
+	var dbPassword     = os.Getenv("DB_PASSWORD")
 
-	pConn := postgres.Open("host=fullstackloadgen.postgres.database.azure.com port=5432 user=test123 password=test123 dbname=postgres sslmode=require")
+	sqlInfo := fmt.Sprintf("host=fullstackloadgen.postgres.database.azure.com port=5432 user=%s password=%s dbname=postgres sslmode=require", dbUsername, dbPassword)
+	pConn := postgres.Open(sqlInfo)
 
 	fmt.Println("got here", pConn)
 	db, err := gorm.Open(pConn, &gorm.Config{})
