@@ -70,7 +70,7 @@ jobs:
       - uses: Azure/aks-set-context@v4
         with:
           cluster-name: fullstackloadgen
-          resource-group: $ {{ secrets.ARM_RESOURCE_GROUP}} ## don't hardcode these,
+          resource-group: ${{ secrets.ARM_RESOURCE_GROUP}} ## don't hardcode these,
       - name: Deploy to AKS     
         run: |
           cd k8s-manifests
