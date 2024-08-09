@@ -30,10 +30,9 @@ jobs:
         id: init
         run: |
           terraform init
-          terraform destroy -auto-approve -var "rg_name=fullstack_renamed"
+          terraform plan -var "rg_name=${ARM_RESOURCE_GROUP}"
+          terraform apply -auto-approve -var "rg_name=${ARM_RESOURCE_GROUP}"
           echo "secrets_identity_id=$(terraform output secrets_identity_id)" >> "$GITHUB_OUTPUT"
-        # terraform plan -var "rg_name=${ARM_RESOURCE_GROUP}"
-        # terraform apply -auto-approve -var "rg_name=${ARM_RESOURCE_GROUP}"
         working-directory: iac/terraform
       
         env:
