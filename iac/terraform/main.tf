@@ -72,8 +72,11 @@ resource "azurerm_role_assignment" "k8srole" {
   skip_service_principal_aad_check = true
 }
 
-resource "random_pet" "db_username" {
-  length = 2
+resource "random_string" "db_username" {
+  length  = 8
+  special = false
+  upper   = true
+  lower   = true
 }
 
 resource "random_password" "db_password" {
@@ -87,7 +90,7 @@ resource "azurerm_postgresql_flexible_server" "main" {
   name                   = "fullstackloadgen"
   resource_group_name    = azurerm_resource_group.test-rg.name
   location               = azurerm_resource_group.test-rg.location
-  administrator_login    = random_pet.db_username.id
+  administrator_login    = random_string.db_username.result
   administrator_password = random_password.db_password.result
 
   authentication {
@@ -136,7 +139,7 @@ resource "azurerm_role_assignment" "akv_sp_k8s" {
 
 resource "azurerm_key_vault_secret" "db_login" {
   name         = "db-login"
-  value        = random_pet.db_username.id
+  value        = random_string.db_username.result
   key_vault_id = azurerm_key_vault.akv.id
 }
 
