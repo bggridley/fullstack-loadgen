@@ -72,12 +72,23 @@ resource "azurerm_role_assignment" "k8srole" {
   skip_service_principal_aad_check = true
 }
 
+resource "random_pet" "db_username" {
+  length = 2
+}
+
+resource "random_password" "db_password" {
+  length  = 16
+  special = true
+  upper   = true
+  lower   = true
+}
+
 resource "azurerm_postgresql_flexible_server" "main" {
   name                   = "fullstackloadgen"
   resource_group_name    = azurerm_resource_group.test-rg.name
   location               = azurerm_resource_group.test-rg.location
-  administrator_login    = "test123"
-  administrator_password = "test123"
+  administrator_login    = random_pet.db_username
+  administrator_password = random_password.db_password
 
   authentication {
     active_directory_auth_enabled = "true"
@@ -123,8 +134,15 @@ resource "azurerm_role_assignment" "akv_sp_k8s" {
   scope                            = azurerm_key_vault.akv.id
 }
 
-resource "azurerm_key_vault_secret" "cosmosdb_connection_string" {
-  name         = "CosmosDBConnectionString"
-  value        = "test123"
+resource "azurerm_key_vault_secret" "db_login" {
+  name         = "db_login"
+  value        = random_pet.db_username
+  key_vault_id = azurerm_key_vault.akv.id
+}
+
+
+resource "azurerm_key_vault_secret" "db_password" {
+  name         = "db_password"
+  value        = random_password.db_password
   key_vault_id = azurerm_key_vault.akv.id
 }
