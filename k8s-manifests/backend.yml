@@ -52,6 +52,17 @@ spec:
           - name: secrets-store-inline
             mountPath: "/mnt/secrets-store"
             readOnly: true
+          env:
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: db-login
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-creds
+                key: db-password
           # volumeMounts:
           # - name: secrets-store-inline
           #   mountPath: "/mnt/secrets-store"
