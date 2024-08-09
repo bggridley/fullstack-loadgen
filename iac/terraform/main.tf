@@ -119,7 +119,7 @@ resource "azurerm_role_assignment" "akv_sp" {
 
 resource "azurerm_role_assignment" "akv_sp_k8s" {
   principal_id                     = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
-  role_definition_name             = "Key Vault Certificate User"
+  role_definition_name             = "Key Vault Secrets User"
   scope                            = azurerm_key_vault.akv.id
 }
 
