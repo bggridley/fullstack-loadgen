@@ -117,6 +117,12 @@ resource "azurerm_role_assignment" "akv_sp" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
+resource "azurerm_role_assignment" "akv_sp_k8s" {
+  principal_id                     = azurerm_kubernetes_cluster.k8s.kubelet_identity[0].object_id
+  role_definition_name             = "Key Vault Certificate User"
+  scope                            = azurerm_key_vault.akv.id
+}
+
 resource "azurerm_key_vault_secret" "cosmosdb_connection_string" {
   name         = "CosmosDBConnectionString"
   value        = "test123"
