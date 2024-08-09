@@ -27,6 +27,7 @@ jobs:
         run: cd iac/terraform
 
       - name: Terraform Init
+        id: init
         run: |
           terraform init
           terraform plan
@@ -76,7 +77,7 @@ jobs:
         run: |
           cd k8s-manifests
           for f in *.yml; do envsubst < $f | kubectl apply -f -; done
-          echo "$SECRETS_IDENTITY_ID"
+          echo "hello secret $SECRETS_IDENTITY_ID"
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
