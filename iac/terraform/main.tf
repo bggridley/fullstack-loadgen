@@ -87,8 +87,8 @@ resource "azurerm_postgresql_flexible_server" "main" {
   name                   = "fullstackloadgen"
   resource_group_name    = azurerm_resource_group.test-rg.name
   location               = azurerm_resource_group.test-rg.location
-  administrator_login    = random_pet.db_username
-  administrator_password = random_password.db_password
+  administrator_login    = random_pet.db_username.id
+  administrator_password = random_password.db_password.result
 
   authentication {
     active_directory_auth_enabled = "true"
@@ -139,7 +139,6 @@ resource "azurerm_key_vault_secret" "db_login" {
   value        = random_pet.db_username.id
   key_vault_id = azurerm_key_vault.akv.id
 }
-
 
 resource "azurerm_key_vault_secret" "db_password" {
   name         = "db-password"
