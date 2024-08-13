@@ -148,3 +148,9 @@ resource "azurerm_key_vault_secret" "db_password" {
   value        = random_password.db_password.result
   key_vault_id = azurerm_key_vault.akv.id
 }
+
+resource "azurerm_key_vault_secret" "test123" {
+  name         = "db-test123"
+  value        = "hello world"
+  key_vault_id = azurerm_key_vault.akv.id
+}
